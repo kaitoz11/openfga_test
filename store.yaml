@@ -1,0 +1,39 @@
+name: test
+description: 'Store ID: 01J15APP88MY5NTG0VT61DZT86'
+model: |
+  model
+    schema 1.1
+
+  type user
+
+  type event
+    relations
+      define organizer: [user]
+      define staff: [user]
+
+  type show
+    relations
+      define can_use: [ticket]
+      define can_check_in: [event#staff]
+
+  type ticket
+tuples:
+  - user: user:cuong
+    relation: organizer
+    object: event:haha
+  - user: user:chien
+    relation: staff
+    object: event:haha
+  - object: show:sad
+    user: ticket:abcd
+    relation: can_use
+  - object: show:sad
+    user: event:haha#staff
+    relation: can_check_in
+tests:
+  - name: Tests
+    check:
+      - user: user:cuong
+        object: event:haha
+        assertions:
+          organizer: false
